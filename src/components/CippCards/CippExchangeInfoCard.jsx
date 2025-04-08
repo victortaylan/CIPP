@@ -9,14 +9,27 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
+import {
+  Card,
+  CardHeader,
+  Divider,
+  Skeleton,
+  Chip,
+  IconButton,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { PropertyList } from "/src/components/property-list";
 import { PropertyListItem } from "/src/components/property-list-item";
 import { getCippFormatting } from "../../utils/get-cipp-formatting";
 import { Check as CheckIcon, Close as CloseIcon, Sync } from "@mui/icons-material";
+import { Check as CheckIcon, Close as CloseIcon, Sync } from "@mui/icons-material";
 import { LinearProgressWithLabel } from "../linearProgressWithLabel";
+import { Stack } from "@mui/system";
 import { Stack } from "@mui/system";
 
 export const CippExchangeInfoCard = (props) => {
+  const { exchangeData, isLoading = false, isFetching = false, handleRefresh, ...other } = props;
   const { exchangeData, isLoading = false, isFetching = false, handleRefresh, ...other } = props;
 
   // Define the protocols array
@@ -48,12 +61,30 @@ export const CippExchangeInfoCard = (props) => {
           </Stack>
         }
       />
+      <CardHeader
+        title={
+          <Stack
+            direction="row"
+            sx={{ alignItems: "center", display: "flex", justifyContent: "space-between" }}
+          >
+            <Typography variant="h6">Exchange Information</Typography>
+            {isFetching ? (
+              <CircularProgress size={20} />
+            ) : (
+              <IconButton onClick={handleRefresh} size="small">
+                <Sync />
+              </IconButton>
+            )}
+          </Stack>
+        }
+      />
       <Divider />
       <PropertyList>
         <PropertyListItem
           divider
           label="Mailbox Type"
           value={
+            isLoading ? (
             isLoading ? (
               <Skeleton variant="text" width={120} />
             ) : (
@@ -66,11 +97,15 @@ export const CippExchangeInfoCard = (props) => {
           label="Mailbox Usage"
           value={
             isLoading ? (
+            isLoading ? (
               <Skeleton variant="text" width={80} />
             ) : exchangeData?.TotalItemSize != null ? (
               <LinearProgressWithLabel
                 sx={{ width: "100%" }}
                 variant="determinate"
+                addedLabel={`(${Math.round(exchangeData.TotalItemSize)}/${Math.round(
+                  exchangeData?.ProhibitSendReceiveQuota
+                )}GB)`}
                 addedLabel={`(${Math.round(exchangeData.TotalItemSize)}/${Math.round(
                   exchangeData?.ProhibitSendReceiveQuota
                 )}GB)`}
@@ -92,6 +127,7 @@ export const CippExchangeInfoCard = (props) => {
           label="Hidden From Address Lists"
           value={
             isLoading ? (
+            isLoading ? (
               <Skeleton variant="text" width={60} />
             ) : (
               getCippFormatting(exchangeData?.HiddenFromAddressLists, "HiddenFromAddressLists")
@@ -101,6 +137,7 @@ export const CippExchangeInfoCard = (props) => {
         <PropertyListItem
           label="Forward and Deliver"
           value={
+            isLoading ? (
             isLoading ? (
               <Skeleton variant="text" width={60} />
             ) : (
@@ -113,6 +150,7 @@ export const CippExchangeInfoCard = (props) => {
           label="Forwarding Address"
           value={
             isLoading ? (
+            isLoading ? (
               <Skeleton variant="text" width={180} />
             ) : (
               exchangeData?.ForwardingAddress || "N/A"
@@ -122,6 +160,7 @@ export const CippExchangeInfoCard = (props) => {
         <PropertyListItem
           label="Archive Mailbox Enabled"
           value={
+            isLoading ? (
             isLoading ? (
               <Skeleton variant="text" width={60} />
             ) : (
@@ -133,6 +172,7 @@ export const CippExchangeInfoCard = (props) => {
           label="Auto Expanding Archive"
           value={
             isLoading ? (
+            isLoading ? (
               <Skeleton variant="text" width={80} />
             ) : (
               getCippFormatting(exchangeData?.AutoExpandingArchive, "AutoExpandingArchive")
@@ -142,6 +182,7 @@ export const CippExchangeInfoCard = (props) => {
         <PropertyListItem
           label="Total Archive Item Size"
           value={
+            isLoading ? (
             isLoading ? (
               <Skeleton variant="text" width={80} />
             ) : exchangeData?.TotalArchiveItemSize != null ? (
@@ -156,6 +197,7 @@ export const CippExchangeInfoCard = (props) => {
           label="Total Archive Item Count"
           value={
             isLoading ? (
+            isLoading ? (
               <Skeleton variant="text" width={80} />
             ) : exchangeData?.TotalArchiveItemCount != null ? (
               exchangeData.TotalArchiveItemCount
@@ -169,6 +211,7 @@ export const CippExchangeInfoCard = (props) => {
           label="Litigation Hold"
           value={
             isLoading ? (
+            isLoading ? (
               <Skeleton variant="text" width={60} />
             ) : (
               getCippFormatting(exchangeData?.LitigationHold, "LitigationHold")
@@ -180,6 +223,7 @@ export const CippExchangeInfoCard = (props) => {
           divider
           label="Mailbox Protocols"
           value={
+            isLoading ? (
             isLoading ? (
               <Skeleton variant="text" width={200} />
             ) : (
@@ -204,6 +248,7 @@ export const CippExchangeInfoCard = (props) => {
           label="Blocked For Spam"
           value={
             isLoading ? (
+            isLoading ? (
               <Skeleton variant="text" width={60} />
             ) : (
               getCippFormatting(exchangeData?.BlockedForSpam, "BlockedForSpam")
@@ -218,6 +263,8 @@ export const CippExchangeInfoCard = (props) => {
 CippExchangeInfoCard.propTypes = {
   exchangeData: PropTypes.object,
   isLoading: PropTypes.bool,
+  isLoading: PropTypes.bool,
   isFetching: PropTypes.bool,
+  handleRefresh: PropTypes.func,
   handleRefresh: PropTypes.func,
 };
