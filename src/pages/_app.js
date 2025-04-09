@@ -1,3 +1,4 @@
+
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import { Provider as ReduxProvider } from "react-redux";

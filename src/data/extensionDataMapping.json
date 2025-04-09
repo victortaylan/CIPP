@@ -1,3 +1,4 @@
+
 {
   "Mailboxes": {
     "description": "List of user mailboxes mapped to their corresponding user via id. Properties can be mapped individually.",
