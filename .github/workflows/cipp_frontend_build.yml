@@ -50,7 +50,7 @@ jobs:
         uses: LanceMcCarthy/Action-AzureBlobUpload@v3.3.1
         with:
           connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
-          container_name: cippstgxmxkb
+          container_name: cippxmxkb
           source_folder: build/
           destination_folder: /
           delete_if_exists: true
