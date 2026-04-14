@@ -1,0 +1,2 @@
+- name: Check specific var
+  run: echo "The value is ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_GRASS_04C9AB010 }}"
